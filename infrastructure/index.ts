@@ -1,6 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as resources from "@pulumi/azure-native/resources";
 import * as containerregistry from "@pulumi/azure-native/containerregistry";
+import * as dockerBuild from "@pulumi/docker-build";
 
 const config = new pulumi.Config();
 
@@ -40,5 +41,17 @@ const registryCredentials = containerregistry
     };
   });
 
-export const acrServer = registry.loginServer;
-export const acrUsername = registryCredentials.username;
+  const image = new dockerBuild.Image(`${prefixName}-image`, {
+  tags: [pulumi.interpolate`${registry.loginServer}/${imageName}:${imageTag}`],
+  context: { location: appPath },
+  dockerfile: { location: `${appPath}/Dockerfile` },
+  platforms: ["linux/amd64", "linux/arm64"],
+  push: true,
+  registries: [
+    {
+      address: registry.loginServer,
+      username: registryCredentials.username,
+      password: registryCredentials.password,
+    },
+  ],
+});
