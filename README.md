@@ -1,68 +1,73 @@
-# CST8918 Lab-A03 Pulumi Weather App
+# CST8918 Hybrid-H03 Pulumi Weather App
 
 ## Group Name
+
 Group 3
 
 ## Team Members
-- Jingjing Duan (Student ID: )
-- Khalid Amchat (Student ID: 041125350)
+
+* Jingjing Duan (Student ID: 041159829)
+* Khalid Amchat (Student ID: 041125350)
 
 ## Project Overview
 
-This lab deploys the Remix Weather application to Microsoft Azure using Pulumi as the Infrastructure as Code tool. The application is packaged as a Docker image, pushed to Azure Container Registry, and deployed publicly using Azure Container Instances.
+This assignment extends the Lab-A03 Pulumi Weather App by improving security and scalability. The OpenWeather API key is securely managed using Pulumi Secrets, and the application cache is migrated from an in-memory implementation to a shared Redis cache hosted on Azure Cache for Redis.
 
-## Lab Objectives
+## Hybrid-H03 Objectives
 
-- Use Pulumi with TypeScript to define Azure infrastructure.
-- Create an Azure Resource Group.
-- Create an Azure Container Registry.
-- Build and push the Docker image to Azure Container Registry.
-- Create an Azure Container Instance / Container Group.
-- Configure the container with required environment variables.
-- Expose the application using a public DNS name.
-- Verify the deployment in the browser.
+* Secure the OpenWeather API key using Pulumi Secrets.
+* Replace the in-memory cache with Redis.
+* Create and configure Azure Cache for Redis.
+* Inject the Redis connection string into the application container.
+* Update and redeploy the application using Pulumi.
+* Verify the deployment in Azure.
 
 ## Technologies Used
 
-- Pulumi
-- TypeScript
-- Azure Container Registry
-- Azure Container Instances
-- Docker
-- Remix
-- OpenWeather API
+* Pulumi
+* TypeScript
+* Azure Container Registry
+* Azure Container Instances
+* Azure Cache for Redis
+* Docker
+* Remix
+* Redis
+* OpenWeather API
 
 ## Azure Resources Created
 
-- Resource Group
-- Azure Container Registry
-- Docker image stored in ACR
-- Azure Container Instance / Container Group
-- Public DNS endpoint
+* Resource Group
+* Azure Container Registry
+* Azure Container Instance / Container Group
+* Azure Cache for Redis
+* Docker image stored in ACR
+* Public DNS endpoint
 
 ## Deployment Screenshot
 
-The Remix Weather application was successfully deployed to Azure Container Instances.
+The Redis-enabled Remix Weather application was successfully deployed to Azure.
 
-Screenshot : [lab-a03.png](./lab-a03.png)
-![alt text](lab-a03.png)
+Screenshot: [pulumi-output.png](./pulumi-output.png)
+
+![alt text](pulumi-output.png)
 
 ## Team Contributions
 
 ### Jingjing Duan
 
-- Initialized the Pulumi infrastructure project.
-- Configured the Pulumi production stack.
-- Created the Azure Resource Group.
-- Created the Azure Container Registry.
-- Configured Docker image build and push to ACR.
+* Configured Pulumi Secret management for the OpenWeather API key.
+* Provisioned Azure Cache for Redis using Pulumi.
+* Generated the Redis connection string and configured the REDIS_URL environment variable.
+* Updated and redeployed Azure infrastructure.
+* Verified deployment and captured deployment output.
 
 ### Khalid Amchat
 
-- Added the Azure Container Instance / Container Group resource.
-- Configured the container group for public access.
-- Deployed and tested the Remix Weather app on Azure.
-- Added the deployment verification screenshot.
+* Installed and configured the Redis client library.
+* Created the Redis connection module.
+* Updated the weather service to use Redis caching.
+* Tested Redis integration in the local development environment.
+* Updated the application container image version.
 
 ## How to Deploy
 
@@ -70,3 +75,12 @@ From the `infrastructure` folder:
 
 ```bash
 pulumi up
+```
+
+## Clean Up
+
+When the deployment is no longer needed:
+
+```bash
+pulumi destroy
+```
