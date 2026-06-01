@@ -45,7 +45,7 @@ This lab deploys the Remix Weather application to Microsoft Azure using Pulumi a
 The Remix Weather application was successfully deployed to Azure Container Instances.
 
 Screenshot : [lab-a03.png](./lab-a03.png)
-![alt text](lab-a03-1.png)
+![alt text](lab-a03.png)
 
 ## Team Contributions
 
