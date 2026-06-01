@@ -3,6 +3,7 @@ import * as resources from "@pulumi/azure-native/resources";
 import * as containerregistry from "@pulumi/azure-native/containerregistry";
 import * as dockerBuild from "@pulumi/docker-build";
 import * as containerinstance from "@pulumi/azure-native/containerinstance";
+import { redis } from "@pulumi/azure-native";
 
 const config = new pulumi.Config();
 
@@ -18,6 +19,32 @@ const memory = config.requireNumber("memory");
 
 // Create a resource group
 const resourceGroup = new resources.ResourceGroup(`${prefixName}-rg`);
+
+const redisCache = new redis.Redis(`${prefixName}-redis`, {
+  name: `${prefixName}-weather-cache`,
+  location: "westus3",
+  resourceGroupName: resourceGroup.name,
+  enableNonSslPort: true,
+  redisVersion: "Latest",
+  minimumTlsVersion: "1.2",
+  redisConfiguration: {
+    maxmemoryPolicy: "allkeys-lru",
+  },
+  sku: {
+    name: "Basic",
+    family: "C",
+    capacity: 0,
+  },
+});
+
+const redisAccessKey = redis
+  .listRedisKeysOutput({
+    name: redisCache.name,
+    resourceGroupName: resourceGroup.name,
+  })
+  .apply((keys) => keys.primaryKey);
+
+const redisConnectionString = pulumi.interpolate`rediss://:${redisAccessKey}@${redisCache.hostName}:${redisCache.sslPort}`;
 
 // Create Azure Container Registry
 const acrName = `${prefixName.replace(/-/g, "")}acr`;
@@ -89,6 +116,10 @@ const containerGroup = new containerinstance.ContainerGroup(
           {
             name: 'WEATHER_API_KEY',
             value: config.requireSecret("weatherApiKey"),
+          },
+          {
+            name: "REDIS_URL",
+            value: redisConnectionString,
           },
         ],
         resources: {
