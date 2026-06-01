@@ -5,7 +5,7 @@ Group 3
 
 ## Team Members
 - Jingjing Duan
-- Khalid Amchat
+- Khalid Amchat (Student ID: 041125350)
 
 ## Lab-A03 Team Contributions
 ### Jingjing Duan
@@ -36,8 +36,9 @@ Group 3
 - Application Validation
 
 ## Screenshots
-- lab-a03.png
+- Remix Weather app deployed on Azure : [lab-a03.png](./lab-a03.png)
+![alt text](lab-a03-1.png)
 - pulumi-output.png
 
-## Public URL
-https://github.com/Jingjing-Duan/cst8918-a03-h03-pulumi-weather/tree/main
+## Public URL Repo
+https://github.com/Jingjing-Duan/cst8918-a03-h03-pulumi-weather/tree/lab-a03
